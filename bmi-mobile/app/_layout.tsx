@@ -3,7 +3,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "@/global.css";
 
-const enableSplash = false;
+const enableSplash = true;
 SplashScreen.preventAutoHideAsync();
 
 
@@ -15,11 +15,11 @@ export default function Layout() {
     if (navigationState?.key && enableSplash) {
       router.replace("/splash");
     }
-    else {
-      console.log("done");
-      SplashScreen.hideAsync();
-      router.replace("/");
-    }
+    // else {
+    //   console.log("done");
+    //   SplashScreen.hideAsync();
+    //   router.replace("/");
+    // }
   }, [navigationState?.key]);
 
     return (
