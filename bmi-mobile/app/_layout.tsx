@@ -67,7 +67,7 @@ export default function RootLayout() {
         }
         return prevIndex + 1;
       });
-    }, 200); // Faster transitions for food images
+    }, 400); // Faster transitions for food images
   };
 
   const fadeToFinalScreen = () => {
