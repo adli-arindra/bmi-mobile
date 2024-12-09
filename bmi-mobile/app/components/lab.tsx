@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext } from 'react';
+import React, { useState, useContext, createContext, useEffect } from 'react';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import FoodCard from '../components/foodCard';
 import { Image } from "react-native";
@@ -41,7 +41,6 @@ const Lab = () => {
     const [food, setFood] = useState('');
     const [currentPerson, setCurrentPerson] = useState<person>(defaultPerson);
 
-
     var path;
     if (currentPerson.bmi > 30) path = require("@/assets/images/body/300.png");
     else if (currentPerson.bmi > 25) path = require("@/assets/images/body/250.png");
@@ -49,10 +48,33 @@ const Lab = () => {
     else if (currentPerson.bmi > 18.5) path = require("@/assets/images/body/185.png");
     else path = require("@/assets/images/body/0.png");
 
+    useEffect(() => {
+        if (food !== '') {
+            let currWeight = currentPerson.weight;
+            if (food === 'Chickin') currWeight += 1;
+            else if (food === 'Beef') currWeight += 2;
+            else if (food === 'Salad') currWeight += -1;
+            else if (food === 'Chilli') currWeight += -2;
+            else if (food === 'Choco') currWeight += 4;
+            else if (food === 'Fries') currWeight += 3;
+            else if (food === 'Paper') currWeight += -3;
+            else if (food === 'Hammer') currWeight += -5;
+
+            if (currWeight < 0) currWeight = 0;
+            let newPerson : person = {
+                weight: currWeight,
+                height: currentPerson.height,
+                bmi: GetBMI(currWeight, currentPerson.height)
+            }
+            setCurrentPerson(newPerson);
+        }
+        setFood('');
+    }, [food]);
+
     return (
         <foodContext.Provider value={{ food, setFood }}>
-            <View className="flex flex-column bg-green-200 min-h-screen justify-between">
-                <View className="w-auto min-h-96 bg-neutral rounded-3xl m-4 px-2 py-6 border-2 border-neutral border-solid">
+            <View className="flex flex-column bg-green-200 min-h-screen">
+                <View className="w-auto min-h-96 bg-neutral rounded-3xl mx-4 px-2 py-6 border-2 border-neutral border-solid">
                     <Text className="text-white text-4xl font-bold text-center pt-4">YOU</Text>
                     <View className="flex justify-center pt-5 flex-col items-center">
 

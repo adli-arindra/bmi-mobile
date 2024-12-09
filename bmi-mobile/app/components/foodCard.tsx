@@ -42,7 +42,9 @@ const FoodCard = ({ Name, Description, Calories, Type }: { Name: string, Descrip
             className={`flex flex-col items-center justify-center rounded-2xl ${selected ? 'bg-accent' : 'bg-neutral'}`}
         >
             <TouchableOpacity
-                onPress={() => state.setFood(Name)}
+                onPress={() => {
+                    state.setFood(Name);
+                }}
                 className="flex flex-col items-center justify-center gap-1">
                 <Image 
                     source={Path}
