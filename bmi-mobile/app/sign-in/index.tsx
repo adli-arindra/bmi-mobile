@@ -13,7 +13,6 @@ const SignIn = () => {
         if (!email || !password) {
             setErrorMessage('Please fill in both fields.');
         } else {
-            // Normally you would authenticate here (e.g., with Firebase, API call)
             console.log('Email:', email);
             console.log('Password:', password);
             const response = await sign_in(email, password);
@@ -24,7 +23,6 @@ const SignIn = () => {
             else {
                 setErrorMessage('Sign In Failed! Check your credentials')
             }
-            // Navigate to another screen upon successful sign-in (optional)
         }
     };
 

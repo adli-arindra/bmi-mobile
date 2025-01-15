@@ -125,7 +125,7 @@ export default function RootLayout() {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      router.push("/"); // Navigate to the index screen
+      router.replace("/"); // Navigate to the index screen
     });
   };
 

@@ -2,28 +2,17 @@ import React, { useState, useContext, createContext, useEffect } from 'react';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import FoodCard from '../components/foodCard';
 import { Image } from "react-native";
-import { foodContext, FoodProvider, useFoodContext } from './context';
+import { foodContext, FoodProvider, useFoodContext } from './foodContext';
 import { add } from '../firebase/db';
 import { executeNativeBackPress } from 'react-native-screens';
 import { ScrollView } from 'react-native-gesture-handler';
-
-interface person {
-    weight: number,
-    height: number,
-    bmi: number,
-}
+import { PersonType, usePersonContext } from './personContext';
 
 const GetBMI = (weight: number, height: number) : number =>  {
     return weight/((height/100) * (height/100));
 }
 
-const defaultPerson: person = {
-  weight: 65,
-  height: 175,
-  bmi: GetBMI(65, 175),
-};
-
-const GetColor = ({ bmi }: { bmi: number }) => {
+const GetColor = ( bmi: number ) => {
   if (bmi > 30) return 'progress progress-error';
   if (bmi > 25) return 'progress progress-warning';
   if (bmi > 21.5) return 'progress progress-info';
@@ -31,7 +20,7 @@ const GetColor = ({ bmi }: { bmi: number }) => {
   return 'progress progress-secondary';
 };
 
-const GetTextColor = ({ bmi }: { bmi: number }) => {
+const GetTextColor = ( bmi: number ) => {
   if (bmi > 30) return 'text-error text-lg';
   if (bmi > 25) return 'text-warning text-lg';
   if (bmi > 21.5) return 'text-info text-lg';
@@ -41,13 +30,15 @@ const GetTextColor = ({ bmi }: { bmi: number }) => {
 
 const Lab = () => {
     const { food, setFood } = useFoodContext();
-    const [person, setPerson] = useState<person>(defaultPerson);
+    const { person, setPerson } = usePersonContext();
+
+    const bmi = GetBMI(person?.weight, person?.height);
 
     var path;
-    if (person.bmi > 30) path = require("@/assets/images/body/300.png");
-    else if (person.bmi > 25) path = require("@/assets/images/body/250.png");
-    else if (person.bmi > 21.5) path = require("@/assets/images/body/230.png");
-    else if (person.bmi > 18.5) path = require("@/assets/images/body/185.png");
+    if (bmi > 30) path = require("@/assets/images/body/300.png");
+    else if (bmi > 25) path = require("@/assets/images/body/250.png");
+    else if (bmi > 21.5) path = require("@/assets/images/body/230.png");
+    else if (bmi > 18.5) path = require("@/assets/images/body/185.png");
     else path = require("@/assets/images/body/0.png");
 
     useEffect(() => {
@@ -63,10 +54,9 @@ const Lab = () => {
             else if (food === 'Hammer') currWeight += -5;
 
             if (currWeight < 0) currWeight = 0;
-            let newPerson : person = {
+            let newPerson : PersonType = {
                 weight: currWeight,
                 height: person.height,
-                bmi: GetBMI(currWeight, person.height)
             }
             setPerson(newPerson);
         }
@@ -82,7 +72,7 @@ const Lab = () => {
                     source = {path}
                     style={{ width: 200, height: 200 }} 
                     resizeMode="contain"></Image>
-                <Text className={GetTextColor(person)}>BMI - {person.bmi.toFixed(2)}</Text>
+                <Text className={GetTextColor(bmi)}>BMI - {bmi.toFixed(2)}</Text>
             </View>
             <View className="flex justify-center items-center gap-4 mb-4 flex-col sm:flex-row">
                 <View className="btn font-bold"><Text>{person.weight} kg</Text></View>

@@ -35,11 +35,6 @@ const sign_out = async () : Promise<boolean> => {
     }
 }
 
-interface UserType {
-    email: string,
-    token: string
-}
-
 const getUser = () => {
     try {
         const user = auth.currentUser;
