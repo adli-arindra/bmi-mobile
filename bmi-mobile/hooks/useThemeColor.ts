@@ -1,8 +1,3 @@
-/**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
- */
-
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -19,3 +14,10 @@ export function useThemeColor(
     return Colors[theme][colorName];
   }
 }
+
+const { getDefaultConfig } = require('@expo/metro-config');
+
+const defaultConfig = getDefaultConfig(__dirname);
+defaultConfig.resolver.sourceExts.push('cjs');
+
+module.exports = defaultConfig;

@@ -1,14 +1,13 @@
-import { Link, Stack } from 'expo-router';
-import { View, Text } from 'react-native';
-
+import { FoodProvider } from './components/context';
 import FoodContainer from './components/lab';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createContext } from 'react';
 
-export default function NotFoundScreen() {
+export default function Main() {
   return (
     <SafeAreaView>
-      <FoodContainer/>
+      <FoodProvider>
+        <FoodContainer/>
+      </FoodProvider>
     </SafeAreaView>
   );
 }

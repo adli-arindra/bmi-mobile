@@ -10,7 +10,6 @@ SplashScreen.preventAutoHideAsync();
 export default function Layout() {
   const router = useRouter();
   const navigationState = useRootNavigationState();
-  console.log("app started");
   useEffect(() => {
     if (navigationState?.key && enableSplash) {
       router.replace("/splash");
