@@ -1,66 +1,57 @@
 import React, { useContext } from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { foodContext } from '@/app/components/lab';
 
-const FoodCard = ({ Name, Description, Calories, Type }: { Name: string, Description: string, Calories: string, Type: string }) => {
+interface FoodCardProps {
+    Name: string;
+    Description: string;
+    Calories: string;
+    Type: string;
+}
+
+const FoodCard = ({ Name, Description, Calories, Type }: FoodCardProps) => {
     const state = useContext(foodContext);
     const selected = state.food === Name;
 
-    // const Path: string = "@/assets/images/food/" + Name + ".png";
-    const yo = "@/assets/images/food/" + "Beef" + ".png";
-    
+    // Default icon path
     var Path = require("@/assets/images/icon.png");
-    switch (Name) {
-        case 'Beef':
-            Path = require("@/assets/images/food/Beef.png");
-            break;
-        case 'Chickin':
-            Path = require("@/assets/images/food/Chickin.png");
-            break;
-        case 'Salad':
-            Path = require("@/assets/images/food/Salad.png");
-            break;
-        case 'Chilli':
-            Path = require("@/assets/images/food/Chilli.png");
-            break;
-        case 'Choco':
-            Path = require("@/assets/images/food/Chocolate.png");
-            break;
-        case 'Fries':
-            Path = require("@/assets/images/food/Fries.png");
-            break;
-        case 'Paper':
-            Path = require("@/assets/images/food/Paper.png");
-            break;
-        case 'Hammer':
-            Path = require("@/assets/images/food/Hammer.png");
-            break;
-    }
+    
+    // Define type for food images object
+    const foodImages: Record<string, ImageSourcePropType> = {
+        'Beef': require("@/assets/images/food/Beef.png"),
+        'Chickin': require("@/assets/images/food/Chickin.png"),
+        'Salad': require("@/assets/images/food/Salad.png"),
+        'Chilli': require("@/assets/images/food/Chilli.png"),
+        'Choco': require("@/assets/images/food/Chocolate.png"),
+        'Fries': require("@/assets/images/food/Fries.png"),
+        'Paper': require("@/assets/images/food/Paper.png"),
+        'Hammer': require("@/assets/images/food/Hammer.png")
+    };
+
+    // Set the path using the name or default to the icon
+    Path = foodImages[Name] || Path;
 
     return (
-        <View
-            className={`flex flex-col items-center justify-center rounded-2xl ${selected ? 'bg-accent' : 'bg-neutral'}`}
+        <TouchableOpacity
+            onPress={() => state.setFood(Name)}
+            className={`p-3 rounded-xl ${selected ? 'bg-[#3B413C]' : 'bg-[#DAF0EE]'} shadow-md`}
         >
-            <TouchableOpacity
-                onPress={() => {
-                    state.setFood(Name);
-                }}
-                className="flex flex-col items-center justify-center gap-1">
+            <View className="items-center space-y-2">
                 <Image 
                     source={Path}
-                    style={{ width: 30, height: 30 }} 
+                    style={{ width: 40, height: 40 }} 
                     resizeMode="contain"
                 />
-                <Text className="text-lg font-bold text-center">{Name}</Text>
-                {/* <Text className="text-sm text-center">{Description}</Text> */}
-                <View className="badge badge-outline text-xs text-center">
-                    <Text>{Calories}</Text>
+                <Text className={`text-lg font-bold ${selected ? 'text-white' : 'text-[#3B413C]'}`}>{Name}</Text>
+                <Text className={`text-xs ${selected ? 'text-[#94D1BE]' : 'text-[#9DB5B2]'}`}>{Description}</Text>
+                <View className={`px-2 py-1 rounded-full ${selected ? 'bg-[#94D1BE]' : 'bg-[#9DB5B2]'}`}>
+                    <Text className="text-xs text-[#3B413C] font-medium">{Calories}</Text>
                 </View>
-                <View className="badge badge-outline text-xs text-center">
-                    <Text>{Type}</Text>
+                <View className={`px-2 py-1 rounded-full ${selected ? 'bg-[#DAF0EE]' : 'bg-[#3B413C]'}`}>
+                    <Text className={`text-xs font-medium ${selected ? 'text-[#3B413C]' : 'text-white'}`}>{Type}</Text>
                 </View>
-            </TouchableOpacity>
-        </View>
+            </View>
+        </TouchableOpacity>
     );
 };
 
