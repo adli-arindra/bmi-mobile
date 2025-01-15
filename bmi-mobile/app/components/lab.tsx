@@ -1,46 +1,47 @@
 import React, { useState, useContext, createContext, useEffect } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, ImageSourcePropType, Image } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import FoodCard from '../components/foodCard';
+import { Image } from "react-native";
 
-interface Person {
-    weight: number;
-    height: number;
-    bmi: number;
+interface person {
+    weight: number,
+    height: number,
+    bmi: number,
 }
 
-const GetBMI = (weight: number, height: number): number => {
-    return weight / ((height / 100) * (height / 100));
+const GetBMI = (weight: number, height: number) : number =>  {
+    return weight/((height/100) * (height/100));
 }
 
-const defaultPerson: Person = {
-    weight: 65,
-    height: 175,
-    bmi: GetBMI(65, 175),
+const defaultPerson: person = {
+  weight: 65,
+  height: 175,
+  bmi: GetBMI(65, 175),
 };
 
-const GetBMIStatus = (bmi: number) => {
-    if (bmi > 30) return 'Obese';
-    if (bmi > 25) return 'Overweight';
-    if (bmi > 21.5) return 'Normal+';
-    if (bmi > 18.5) return 'Normal';
-    return 'Underweight';
+const GetColor = ({ bmi }: { bmi: number }) => {
+  if (bmi > 30) return 'progress progress-error';
+  if (bmi > 25) return 'progress progress-warning';
+  if (bmi > 21.5) return 'progress progress-info';
+  if (bmi > 18.5) return 'progress progress-success';
+  return 'progress progress-secondary';
 };
 
-const GetColor = (bmi: number) => {
-    if (bmi > 30) return '#3B413C';  // Dark slate
-    if (bmi > 25) return '#9DB5B2';  // Sage
-    if (bmi > 21.5) return '#DAF0EE'; // Light mint
-    if (bmi > 18.5) return '#94D1BE'; // Mint
-    return '#FFFFFF';  // White
+const GetTextColor = ({ bmi }: { bmi: number }) => {
+  if (bmi > 30) return 'text-error text-lg';
+  if (bmi > 25) return 'text-warning text-lg';
+  if (bmi > 21.5) return 'text-info text-lg';
+  if (bmi > 18.5) return 'text-success text-lg';
+  return 'text-secondary text-lg';
 };
 
 export const foodContext = createContext<any>(undefined);
 
 const Lab = () => {
     const [food, setFood] = useState('');
-    const [currentPerson, setCurrentPerson] = useState<Person>(defaultPerson);
+    const [currentPerson, setCurrentPerson] = useState<person>(defaultPerson);
 
-    var path: ImageSourcePropType;
+    var path;
     if (currentPerson.bmi > 30) path = require("@/assets/images/body/300.png");
     else if (currentPerson.bmi > 25) path = require("@/assets/images/body/250.png");
     else if (currentPerson.bmi > 21.5) path = require("@/assets/images/body/230.png");
@@ -50,71 +51,63 @@ const Lab = () => {
     useEffect(() => {
         if (food !== '') {
             let currWeight = currentPerson.weight;
-            const foodEffects: Record<string, number> = {
-                'Chickin': 1, 'Beef': 2, 'Salad': -1, 'Chilli': -2,
-                'Choco': 4, 'Fries': 3, 'Paper': -3, 'Hammer': -5
-            };
-            currWeight += foodEffects[food] || 0;
+            if (food === 'Chickin') currWeight += 1;
+            else if (food === 'Beef') currWeight += 2;
+            else if (food === 'Salad') currWeight += -1;
+            else if (food === 'Chilli') currWeight += -2;
+            else if (food === 'Choco') currWeight += 4;
+            else if (food === 'Fries') currWeight += 3;
+            else if (food === 'Paper') currWeight += -3;
+            else if (food === 'Hammer') currWeight += -5;
+
             if (currWeight < 0) currWeight = 0;
-            
-            setCurrentPerson({
+            let newPerson : person = {
                 weight: currWeight,
                 height: currentPerson.height,
                 bmi: GetBMI(currWeight, currentPerson.height)
-            });
+            }
+            setCurrentPerson(newPerson);
         }
         setFood('');
     }, [food]);
 
     return (
         <foodContext.Provider value={{ food, setFood }}>
-            <ScrollView className="flex-1 bg-[#DAF0EE]">
-                <View className="p-4">
-                    {/* Profile Card */}
-                    <View className="bg-[#3B413C] rounded-3xl p-6 shadow-lg">
-                        <Text className="text-white text-3xl font-bold text-center mb-4">Your Health Profile</Text>
-                        
-                        <View className="items-center mb-6">
-                            <Image 
-                                source={path}
-                                style={{ width: 180, height: 180 }} 
-                                resizeMode="contain"
-                            />
-                            <View className="bg-[#9DB5B2] px-6 py-2 rounded-full mt-4">
-                                <Text className="text-[#3B413C] text-xl font-bold">
-                                    BMI: {currentPerson.bmi.toFixed(1)} - {GetBMIStatus(currentPerson.bmi)}
-                                </Text>
-                            </View>
-                        </View>
+            <View className="flex flex-column bg-green-200 min-h-screen">
+                <View className="w-auto min-h-96 bg-neutral rounded-3xl mx-4 px-2 py-6 border-2 border-neutral border-solid">
+                    <Text className="text-white text-4xl font-bold text-center pt-4">YOU</Text>
+                    <View className="flex justify-center pt-5 flex-col items-center">
 
-                        <View className="flex-row justify-around">
-                            <View className="bg-[#94D1BE] px-6 py-3 rounded-xl">
-                                <Text className="text-[#3B413C] text-lg font-bold">{currentPerson.weight} kg</Text>
-                            </View>
-                            <View className="bg-[#94D1BE] px-6 py-3 rounded-xl">
-                                <Text className="text-[#3B413C] text-lg font-bold">{currentPerson.height} cm</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    {/* Food Section */}
-                    <View className="bg-[#9DB5B2] rounded-3xl mt-4 p-6 shadow-lg">
-                        <Text className="text-[#3B413C] text-2xl font-bold text-center mb-2">Food Choices</Text>
-                        <Text className="text-[#3B413C] text-center mb-4">What would you like to eat today?</Text>
-                        
-                        <View className="flex-row flex-wrap justify-center gap-4">
-                            <FoodCard Name="Chickin" Description="Protein Rich" Calories="239 cal" Type="Meat" />
-                            <FoodCard Name="Beef" Description="Iron Rich" Calories="271 cal" Type="Meat" />
-                            <FoodCard Name="Salad" Description="Fresh & Healthy" Calories="114 cal" Type="Veggies" />
-                            <FoodCard Name="Chilli" Description="Metabolism Boost" Calories="40 cal" Type="Veggies" />
-                            <FoodCard Name="Choco" Description="Sweet Treat" Calories="555 cal" Type="Snack" />
-                            <FoodCard Name="Fries" Description="Crispy" Calories="311 cal" Type="Snack" />
-                            <FoodCard Name="Paper" Description="Not Food!" Calories="0 cal" Type="Inedible" />
-                            <FoodCard Name="Hammer" Description="Dangerous!" Calories="-123 cal" Type="Tool" />
-                        </View>
-                    </View>
+                    <Image 
+                        source = {path}
+                        style={{ width: 200, height: 200 }} 
+                        resizeMode="contain"></Image>
+                    <Text className={GetTextColor(currentPerson)}>BMI - {currentPerson.bmi.toFixed(2)}</Text>
                 </View>
-            </ScrollView>
+
+                <View className="flex justify-center items-center gap-4 mb-4 flex-col sm:flex-row">
+                    <View className="btn font-bold"><Text>{currentPerson.weight} kg</Text></View>
+                    <View className="btn font-bold"><Text>{currentPerson.height} cm</Text></View>
+                </View>
+            </View>
+
+            <View className="w-auto bg-neutral rounded-3xl m-4 py-6 border-2 border-neutral border-solid
+                            flex flex-col justify-center items-center">
+                <Text className="text-white text-2xl text-center font-bold">FOOD CHOICES</Text>
+                <Text className="text-neutral-content text-center text-sm mt-2">Makan apa hari ini?</Text>
+                <View className="flex flex-row flex-wrap mx-8 gap-6 mt-4 items-center justify-center">
+                    <FoodCard Name="Chickin" Description="Kukuruyuk" Calories="239 cal" Type="Meat" />
+                    <FoodCard Name="Beef" Description="Moooo" Calories="271 cal" Type="Meat" />
+                    <FoodCard Name="Salad" Description="Yummy" Calories="114 cal" Type="Veggies" />
+                    <FoodCard Name="Chilli" Description="Hot!" Calories="40 cal" Type="Veggies" />
+                    <FoodCard Name="Choco" Description="Sweet" Calories="555 cal" Type="Store" />
+                    <FoodCard Name="Fries" Description="Nice" Calories="311 cal" Type="Good" />
+                    <FoodCard Name="Paper" Description="Why" Calories="0 cal" Type="ATK" />
+                    <FoodCard Name="Hammer" Description="DON'T" Calories="-123 cal" Type="Huh" />
+                </View>
+            </View>
+
+        </View>
         </foodContext.Provider>
     );
 };
