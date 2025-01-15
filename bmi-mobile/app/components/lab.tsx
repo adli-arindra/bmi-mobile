@@ -5,6 +5,7 @@ import { Image } from "react-native";
 import { foodContext, FoodProvider, useFoodContext } from './context';
 import { add } from '../firebase/db';
 import { executeNativeBackPress } from 'react-native-screens';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface person {
     weight: number,
@@ -51,7 +52,6 @@ const Lab = () => {
 
     useEffect(() => {
         if (food !== '') {
-            console.log(food);
             let currWeight = person.weight;
             if (food === 'Chickin') currWeight += 1;
             else if (food === 'Beef') currWeight += 2;
