@@ -1,7 +1,7 @@
 import { RelativePathString, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { signIn } from "@/app/firebase/app/auth";
+import { sign_in } from "@/app/firebase/app/auth";
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ const SignIn = () => {
             // Normally you would authenticate here (e.g., with Firebase, API call)
             console.log('Email:', email);
             console.log('Password:', password);
-            const response = await signIn(email, password);
+            const response = await sign_in(email, password);
             if (response) {
                 setErrorMessage('');
                 router.replace('/');

@@ -1,9 +1,9 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User, signOut } from "firebase/auth"
 import { app } from "../config"
 
 const auth = getAuth(app);
 
-const signUp = async (email: string, password: string) : Promise<string> => {
+const sign_up = async (email: string, password: string) : Promise<string> => {
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
         console.log(response);
@@ -14,7 +14,7 @@ const signUp = async (email: string, password: string) : Promise<string> => {
     }
 }
 
-const signIn = async (email: string, password: string) : Promise<boolean> => {
+const sign_in = async (email: string, password: string) : Promise<boolean> => {
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
         console.log(response);
@@ -25,19 +25,34 @@ const signIn = async (email: string, password: string) : Promise<boolean> => {
     }
 }
 
+const sign_out = async () : Promise<boolean> => {
+    try {
+        const response = await signOut(auth);
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
+
 interface UserType {
     email: string,
     token: string
 }
 
-const getUser = async () => {
+const getUser = () => {
     try {
         const user = auth.currentUser;
-        console.log(user);
+        if (user) {
+            return user;
+        }
+        else {
+            throw new Error("No user found");
+        }
     } 
     catch(err) {
         console.error(err);
     }
 }
 
-export { auth, signUp, signIn, getUser };
+export { auth, sign_up, sign_in, sign_out, getUser };

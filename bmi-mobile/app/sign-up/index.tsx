@@ -1,7 +1,7 @@
 import { RelativePathString, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { signUp } from "@/app/firebase/app/auth";
+import { sign_up } from "@/app/firebase/app/auth";
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ const SignUp = () => {
             console.log('Email:', email);
             console.log('Password:', password);
             console.log('Confirm Password:', confirmPassword);
-            const response = await signUp(email, password);
+            const response = await sign_up(email, password);
             console.log(response);
             setErrorMessage(response);
             // On success, you can navigate to another page
