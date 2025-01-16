@@ -1,15 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
-import { foodContext, useFoodContext } from '@/app/components/foodContext';
+import { foodContext, FoodType, useFoodContext } from '@/app/components/foodContext';
 
-export interface FoodType {
-    Name: string,
-    Description: string,
-    Calories: string,
-    Type: string,
-    Path: ImageSourcePropType,
-    WeightDiff: number,
-}
+
 
 const FoodCard = ({ Name, Description, Calories, Type, Path, WeightDiff }: 
     FoodType) => {

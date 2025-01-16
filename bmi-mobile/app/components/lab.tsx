@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FoodCard from '../components/foodCard';
 import { Image } from "react-native";
-import { foodsInit, useFoodContext } from './foodContext';
+import { foodsInit, useFoodContext, UserCreatedFoods } from './foodContext';
 import { PersonType, usePersonContext } from '@/app/components/personContext';
-import { FoodType } from "@/app/components/foodCard";
+import { RelativePathString, router } from 'expo-router';
 
 const GetBMI = (weight: number, height: number) : number =>  {
     return weight/((height/100) * (height/100));
@@ -27,6 +27,7 @@ const GetTextColor = ( bmi: number ) => {
 };
 
 const Lab = () => {
+    console.log(UserCreatedFoods);
     const { food, setFood } = useFoodContext();
     const { person, setPerson } = usePersonContext();
 
@@ -75,12 +76,16 @@ const Lab = () => {
             <Text className="text-neutral-content text-center text-sm mt-2">Makan apa hari ini?</Text>
             <ScrollView className="py-4 mx-8 gap-6 mt-4" horizontal={true}>
             <View className="flex flex-row flex-wrap items-center justify-center gap-1">
-                { foodsInit.map((food) => (
-                    <FoodCard Name={food.Name} Calories={food.Calories} Description={food.Description}
+                { foodsInit.map((food, index) => (
+                    <FoodCard key={index} Name={food.Name} Calories={food.Calories} Description={food.Description}
                         Path={food.Path} Type={food.Type} WeightDiff={food.WeightDiff}/>
                 ))}
+                { UserCreatedFoods.map((food, index) => (
+                    <FoodCard key={index} Name={food.Name} Calories={food.Calories} Description={food.Description}
+                        Path={{uri: food.Path} as ImageSourcePropType} Type={food.Type} WeightDiff={food.WeightDiff}/>
+                ))}
                 <TouchableOpacity
-                        onPress={() => {}}
+                        onPress={() => {router.push('/make' as RelativePathString)}}
                         className={"p-3 rounded-xl bg-[#DAF0EE] shadow-md items-center w-28 h-full flex fkex-col "}>
                     <View className='bg-gray-400 rounded-full w-12 h-12 flex justify-center items-center mt-6'>
                         <Text className='text-4xl text-white font-bold text-center'>+</Text>

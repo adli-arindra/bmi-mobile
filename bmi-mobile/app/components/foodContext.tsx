@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useContext, Children, Dispatch, SetStateAction } from 'react';
-import { FoodType } from './foodCard';
+import { ImageSourcePropType } from 'react-native';
 
 interface FoodContextType {
   food: FoodType | undefined;
@@ -22,11 +22,20 @@ export const FoodProvider = ({children} : {children: React.ReactNode}) => {
   );
 };
 
+export interface FoodType {
+    Name: string,
+    Description: string,
+    Calories: number,
+    Type: string,
+    Path: ImageSourcePropType | undefined,
+    WeightDiff: number,
+}
+
 export const foodsInit: FoodType[] = [
   {
       Name: "Chickin",
       Description: "Kukuruyuk",
-      Calories: "239 cal",
+      Calories: 239,
       Type: "Meat",
       Path: require("@/assets/images/food/Chickin.png"),
       WeightDiff: 1,
@@ -34,31 +43,31 @@ export const foodsInit: FoodType[] = [
   {
       Name: "Beef",
       Description: "Mooo",
-      Calories: "482 cal",
+      Calories: 482,
       Type: "Meat",
       Path: require("@/assets/images/food/Beef.png"),
       WeightDiff: 2,
   },
   {
-      Name: "Choco",
-      Description: "Sweet",
-      Calories: "555 cal",
-      Type: "Store",
-      Path: require("@/assets/images/food/Chocolate.png"),
-      WeightDiff: 3
+    Name: "Fries",
+    Description: "Nice",
+    Calories: 311,
+    Type: "Good",
+    Path: require("@/assets/images/food/Fries.png"),
+    WeightDiff: 3
   },
   {
-      Name: "Fries",
-      Description: "Nice",
-      Calories: "311 cal",
-      Type: "Good",
-      Path: require("@/assets/images/food/Fries.png"),
+      Name: "Choco",
+      Description: "Sweet",
+      Calories: 555,
+      Type: "Store",
+      Path: require("@/assets/images/food/Chocolate.png"),
       WeightDiff: 4
   },
   {
       Name: "Salad",
       Description: "Yummy",
-      Calories: "114 cal",
+      Calories: 114,
       Type: "Veggies",
       Path: require("@/assets/images/food/Salad.png"),
       WeightDiff: -1
@@ -66,7 +75,7 @@ export const foodsInit: FoodType[] = [
   {
       Name: "Chilli",
       Description: "Hot",
-      Calories: "40 cal",
+      Calories: 40,
       Type: "Veggies",
       Path: require("@/assets/images/food/Chilli.png"),
       WeightDiff: -2
@@ -74,7 +83,7 @@ export const foodsInit: FoodType[] = [
   {
       Name: "Paper",
       Description: "why",
-      Calories: "0 cal",
+      Calories: 0,
       Type: "UAS",
       Path: require("@/assets/images/food/Paper.png"),
       WeightDiff: -3
@@ -82,9 +91,11 @@ export const foodsInit: FoodType[] = [
   {
       Name: "Hammer",
       Description: "DO NOT",
-      Calories: "-782 cal",
+      Calories: -782,
       Type: "???",
       Path: require("@/assets/images/food/Hammer.png"),
       WeightDiff: -4
   },
 ]
+
+export const UserCreatedFoods: FoodType[] = [];
