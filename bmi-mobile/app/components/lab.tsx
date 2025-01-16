@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginTop: 10,
+        maxHeight: 200,
     },
     foodRow: {
         flexDirection: 'row',

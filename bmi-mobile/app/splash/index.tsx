@@ -179,11 +179,11 @@ export default function RootLayout() {
                 marginTop: -20,
                 fontSize: 30,
                 fontWeight: "bold",
-                color: "#4A00FF", // BMI Calculator color
+                color: "#3B413C", // BMI Calculator color
                 opacity: textFadeAnim, // Apply fade-out effect to text
               }}
             >
-              BMI Calculator
+              DinoFit
             </Animated.Text>
           </>
         )}
