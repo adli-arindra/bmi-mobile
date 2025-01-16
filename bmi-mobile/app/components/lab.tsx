@@ -1,12 +1,9 @@
-import React, { useState, useContext, createContext, useEffect } from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { useEffect } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 import FoodCard from '../components/foodCard';
 import { Image } from "react-native";
-import { foodContext, FoodProvider, useFoodContext } from './foodContext';
-import { add } from '../firebase/db';
-import { executeNativeBackPress } from 'react-native-screens';
-import { ScrollView } from 'react-native-gesture-handler';
-import { PersonType, usePersonContext } from './personContext';
+import { useFoodContext } from './foodContext';
+import { PersonType, usePersonContext } from '@/app/components/personContext';
 
 const GetBMI = (weight: number, height: number) : number =>  {
     return weight/((height/100) * (height/100));
@@ -83,7 +80,8 @@ const Lab = () => {
                         flex flex-col justify-center items-center">
             <Text className="text-white text-2xl text-center font-bold">FOOD CHOICES</Text>
             <Text className="text-neutral-content text-center text-sm mt-2">Makan apa hari ini?</Text>
-            <View className="flex flex-row flex-wrap mx-8 gap-6 mt-4 items-center justify-center">
+            <ScrollView className="py-4 mx-8 gap-6 mt-4" horizontal={true}>
+            <View className="flex flex-row flex-wrap items-center justify-center">
                 <FoodCard Name="Chickin" Description="Kukuruyuk" Calories="239 cal" Type="Meat"/>
                 <FoodCard Name="Beef" Description="Moooo" Calories="271 cal" Type="Meat"/>
                 <FoodCard Name="Salad" Description="Yummy" Calories="114 cal" Type="Veggies"/>
@@ -93,6 +91,7 @@ const Lab = () => {
                 <FoodCard Name="Paper" Description="Why" Calories="0 cal" Type="ATK"/>
                 <FoodCard Name="Hammer" Description="DON'T" Calories="-123 cal" Type="Huh"/>
             </View>
+            </ScrollView>
         </View>
     </View>
     );

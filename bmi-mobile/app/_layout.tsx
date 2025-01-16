@@ -5,9 +5,10 @@ import "@/global.css";
 import { AppState, AppStateStatus } from "react-native";
 import { auth } from "./firebase/app/auth";
 import { loadData, saveData } from "./firebase/app/db";
+import { PersonProvider } from "./components/personContext";
 
-const enableSplash = true;
-SplashScreen.preventAutoHideAsync();
+const enableSplash = false;
+// SplashScreen.preventAutoHideAsync();
 
 
 export default function Layout() {
@@ -57,13 +58,15 @@ export default function Layout() {
   }, []);
 
     return (
-        <Stack
-            screenOptions={{
-                headerStyle: { backgroundColor: "#f8f9fa" },
-                headerTintColor: "#333",
-                headerTitleStyle: { fontWeight: "bold" },
-                headerShown: false,
-            }}
-        />
+        <PersonProvider>
+            <Stack
+                screenOptions={{
+                    headerStyle: { backgroundColor: "#f8f9fa" },
+                    headerTintColor: "#333",
+                    headerTitleStyle: { fontWeight: "bold" },
+                    headerShown: false,
+                }}
+            />
+        </PersonProvider>
     );
 }

@@ -1,12 +1,12 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User, signOut } from "firebase/auth"
-import { app } from "../config"
+import { app } from "@/app/firebase/app/config"
 
 const auth = getAuth(app);
 
 const sign_up = async (email: string, password: string) : Promise<string> => {
     try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
-        console.log(response);
+        console.log("Sign Up success!")
         return "";
     } catch(err) {
         console.error(err);
@@ -17,7 +17,7 @@ const sign_up = async (email: string, password: string) : Promise<string> => {
 const sign_in = async (email: string, password: string) : Promise<boolean> => {
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
-        console.log(response);
+        console.log("Sign In success!");
         return true;
     } catch(err) {
         console.error(err);
@@ -28,6 +28,7 @@ const sign_in = async (email: string, password: string) : Promise<boolean> => {
 const sign_out = async () : Promise<boolean> => {
     try {
         const response = await signOut(auth);
+        console.log("Sign Out success!");
         return true;
     } catch (err) {
         console.log(err);

@@ -3,9 +3,9 @@ import { RelativePathString, useRouter } from 'expo-router';
 import { getUser } from "@/app/firebase/app/auth";
 import { useEffect, useState } from 'react';
 import { sign_out } from '@/app/firebase/app/auth';
-import { usePersonContext } from './personContext';
+import { usePersonContext } from '@/app/components/personContext';
 import { loadData, saveData } from '../firebase/app/db';
-import { personInit } from './personContext';
+import { personInit } from '@/app/components/personContext';
 
 const Header = () => {
     const [ signedIn, setSignedIn] = useState<boolean>(false);
@@ -25,7 +25,7 @@ const Header = () => {
     useEffect(() => {
         const load_from_firestore = async () => {
             try {
-                const { weight, height } = await loadData(getUser()?.email as string) as { weight: number, height: number };
+                const { weight, height } = await loadData(getUser()?.uid as string) as { weight: number, height: number };
                 setPerson({
                     weight: weight,
                     height: height
@@ -43,7 +43,7 @@ const Header = () => {
     const handleSignOut = async () => {
         try {
             try {
-                saveData(getUser()?.email || " ", person.weight, person.height );
+                saveData(getUser()?.uid || " ", person.weight, person.height );
             } catch(err) {
                 console.error(err);
             }
@@ -57,22 +57,17 @@ const Header = () => {
         }
     }
 
-    const navigateToSignUp = () => {
-        router.push('/sign-up' as RelativePathString);
-    };
-
-    const navigateToSignIn = () => {
-        router.push('/sign-in' as RelativePathString);
-    }
-
     return (
         <View className='flex flex-row w-screen'>
             { signedIn ?
+                <>
                 <Button title="Sign Out" onPress={handleSignOut}/>
+                <Button title="Profile" onPress={() => {router.push('/profile' as RelativePathString)}}/>
+                </>
                 :
                 <>
-                <Button title="Go to Sign Up" onPress={navigateToSignUp}/>
-                <Button title="Go to Sign In" onPress={navigateToSignIn}/>
+                <Button title="Go to Sign Up" onPress={() => {router.push('/sign-up' as RelativePathString)}}/>
+                <Button title="Go to Sign In" onPress={() => {router.push('/sign-in' as RelativePathString)}}/>
                 </>
             }
         </View>

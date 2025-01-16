@@ -2,8 +2,15 @@ import React, { useContext, useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { foodContext, useFoodContext } from '@/app/components/foodContext';
 
+export interface FoodProps {
+    Name: string,
+    Description: string,
+    Calories: string,
+    Type: string
+}
+
 const FoodCard = ({ Name, Description, Calories, Type } : 
-    { Name: string, Description: string, Calories: string, Type: string}) => {
+    FoodProps) => {
     const { food, setFood } = useFoodContext();
     const selected = food === Name;
     
