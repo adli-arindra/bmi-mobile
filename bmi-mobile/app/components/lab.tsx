@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FoodCard from '../components/foodCard';
 import { Image } from "react-native";
-import { useFoodContext } from './foodContext';
+import { foodsInit, useFoodContext } from './foodContext';
 import { PersonType, usePersonContext } from '@/app/components/personContext';
+import { FoodType } from "@/app/components/foodCard";
 
 const GetBMI = (weight: number, height: number) : number =>  {
     return weight/((height/100) * (height/100));
@@ -39,17 +40,9 @@ const Lab = () => {
     else path = require("@/assets/images/body/0.png");
 
     useEffect(() => {
-        if (food !== '') {
+        if (food !== undefined) {
             let currWeight = person.weight;
-            if (food === 'Chickin') currWeight += 1;
-            else if (food === 'Beef') currWeight += 2;
-            else if (food === 'Salad') currWeight += -1;
-            else if (food === 'Chilli') currWeight += -2;
-            else if (food === 'Choco') currWeight += 4;
-            else if (food === 'Fries') currWeight += 3;
-            else if (food === 'Paper') currWeight += -3;
-            else if (food === 'Hammer') currWeight += -5;
-
+            currWeight += food.WeightDiff;
             if (currWeight < 0) currWeight = 0;
             let newPerson : PersonType = {
                 weight: currWeight,
@@ -57,7 +50,7 @@ const Lab = () => {
             }
             setPerson(newPerson);
         }
-        setFood('');
+        setFood(undefined);
     }, [food]);
 
     return (
@@ -81,15 +74,19 @@ const Lab = () => {
             <Text className="text-white text-2xl text-center font-bold">FOOD CHOICES</Text>
             <Text className="text-neutral-content text-center text-sm mt-2">Makan apa hari ini?</Text>
             <ScrollView className="py-4 mx-8 gap-6 mt-4" horizontal={true}>
-            <View className="flex flex-row flex-wrap items-center justify-center">
-                <FoodCard Name="Chickin" Description="Kukuruyuk" Calories="239 cal" Type="Meat"/>
-                <FoodCard Name="Beef" Description="Moooo" Calories="271 cal" Type="Meat"/>
-                <FoodCard Name="Salad" Description="Yummy" Calories="114 cal" Type="Veggies"/>
-                <FoodCard Name="Chilli" Description="Hot!" Calories="40 cal" Type="Veggies"/>
-                <FoodCard Name="Choco" Description="Sweet" Calories="555 cal" Type="Store"/>
-                <FoodCard Name="Fries" Description="Nice" Calories="311 cal" Type="Good"/>
-                <FoodCard Name="Paper" Description="Why" Calories="0 cal" Type="ATK"/>
-                <FoodCard Name="Hammer" Description="DON'T" Calories="-123 cal" Type="Huh"/>
+            <View className="flex flex-row flex-wrap items-center justify-center gap-1">
+                { foodsInit.map((food) => (
+                    <FoodCard Name={food.Name} Calories={food.Calories} Description={food.Description}
+                        Path={food.Path} Type={food.Type} WeightDiff={food.WeightDiff}/>
+                ))}
+                <TouchableOpacity
+                        onPress={() => {}}
+                        className={"p-3 rounded-xl bg-[#DAF0EE] shadow-md items-center w-28 h-full flex fkex-col "}>
+                    <View className='bg-gray-400 rounded-full w-12 h-12 flex justify-center items-center mt-6'>
+                        <Text className='text-4xl text-white font-bold text-center'>+</Text>
+                    </View>
+                    <Text className='text-xs font-bold text-gray-600 mt-4'>Add New</Text>            
+                </TouchableOpacity>
             </View>
             </ScrollView>
         </View>
