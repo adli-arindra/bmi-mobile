@@ -63,7 +63,7 @@ const Lab = () => {
                 <Text style={styles.foodTitle}>FOOD CHOICES</Text>
                 <Text style={styles.subtitle}>Makan apa hari ini?</Text>
                 <ScrollView style={styles.scroll} horizontal={true}>
-                    <View style={styles.foodRow}>
+                    <View style={styles.foodRow} className='pr-8'>
                         {foodsInit.map((food, index) => (
                             <TouchableOpacity
                                 key={index}
@@ -106,7 +106,8 @@ const Lab = () => {
                         ))}
                         <TouchableOpacity
                             onPress={() => { router.push('/make' as RelativePathString); }}
-                            style={styles.addButton}>
+                            style={styles.addButton}
+                            className='w-32 h-full flex justify-center items-center'>
                             <View style={styles.addIcon}>
                                 <Text style={styles.addText}>+</Text>
                             </View>
@@ -121,7 +122,6 @@ const Lab = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#E6F8F3',
         minHeight: '100%',
         width: '100%',
